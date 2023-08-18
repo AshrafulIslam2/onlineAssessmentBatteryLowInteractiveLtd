@@ -1,14 +1,93 @@
-import React, { useState } from "react";
-import Button from "./UiComponent/Button";
-import InputField from "./FromComponents/InputField";
+import React, { useRef, useState } from "react";
 
-const StepTwo = ({ data, onPrevious, onSubmit }) => {
-  const handleSubmit = () => {
-    onSubmit({ ...data });
+import Papa from "papaparse";
+import InputField from "./FromComponents/InputField";
+import Button from "./UiComponent/Button";
+
+const StepTwo = ({ data, onPrevious, onSubmit, setFormData }) => {
+  const formRef = useRef(null);
+  const [csvFile, setCsvFile] = useState(null);
+  const [minX, setMinX] = useState(null);
+  const [maxX, setMaxX] = useState(null);
+  const [minY, setMinY] = useState(null);
+  const [maxY, setMaxY] = useState(null);
+  const [minZ, setMinZ] = useState(null);
+  const [maxZ, setMaxZ] = useState(null);
+  // const HandlesecondStepData = (event) => {
+  //   const { name, value } = event.target;
+  //   SetsecondStepdata((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  // };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(formRef.current);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+    onSubmit(data);
+  };
+  const RedCSVFIle = (event) => {
+    const file = event.target.files[0];
+    setCsvFile(file);
+    if (file) {
+      Papa.parse(file, {
+        complete: (result) => {
+          const data = result.data;
+          const xValues = data.map((row) => {
+            return row[1];
+          });
+          const yValues = data.map((row) => {
+            return row[2];
+          });
+          const zValues = data.map((row) => {
+            return row[3];
+          });
+          const xAxis = xValues
+            .slice(1)
+            .map((value) => parseFloat(value))
+            .filter((value) => !isNaN(value));
+          if (xAxis.length === 0) {
+            console.log("No numeric values found.");
+          } else {
+            // Find the minimum and maximum values
+            setMinX(Math.min(...xAxis));
+            setMaxX(Math.max(...xAxis));
+          }
+          const YAxis = yValues
+            .slice(1)
+            .map((value) => parseFloat(value))
+            .filter((value) => !isNaN(value));
+          if (YAxis.length === 0) {
+            console.log("No numeric values found.");
+          } else {
+            // Find the minimum and maximum values
+            setMinY(Math.min(...YAxis));
+            setMaxY(Math.max(...YAxis));
+          }
+          const zAxis = zValues
+            .slice(1)
+            .map((value) => parseFloat(value))
+            .filter((value) => !isNaN(value));
+          if (zAxis.length === 0) {
+            console.log("No numeric values found.");
+          } else {
+            // Find the minimum and maximum values
+            setMinZ(Math.min(...zAxis));
+            setMaxZ(Math.max(...zAxis));
+          }
+
+          // Assuming data is an array of objects with x, y, z properties
+        },
+      });
+    }
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit} ref={formRef}>
       <h2>Step 2</h2>
       <p>Name: {data.name}</p>
       <InputField
@@ -16,49 +95,56 @@ const StepTwo = ({ data, onPrevious, onSubmit }) => {
         title={"Upload CSV File"}
         placeholder="Description"
         value=""
+        Handler={RedCSVFIle}
       />
       <InputField
         type={"number"}
         title={"max_X"}
         placeholder="max_X"
-        value=""
+        name={"max_X"}
+        value={maxX}
       />
       <InputField
         type={"number"}
         title={"min_X"}
         placeholder="min_X"
-        value=""
+        value={minX}
+        name={"min_X"}
       />
       <InputField
         type={"number"}
         title={"max_Y"}
         placeholder="max_Y"
-        value=""
+        value={maxY}
+        name={"max_Y"}
       />
       <InputField
         type={"number"}
         title={"min_Y"}
         placeholder="min_Y"
-        value=""
+        value={minY}
+        name={"min_Y"}
       />
       <InputField
         type={"number"}
         title={"max_Z"}
-        placeholder="max_Y"
-        value=""
+        name={"max_Z"}
+        placeholder="max_z"
+        value={maxZ}
       />
       <InputField
         type={"number"}
         title={"min_Z"}
+        name="min_Z"
         placeholder="min_Z"
-        value=""
+        value={minZ}
       />
 
       <div className="flex gap-3">
         <Button title={"Previous"} onPrevious={onPrevious} />
-        <Button title={"Submit"} handleSubmit={handleSubmit} />
+        <Button type="submit" title="Submit" />
       </div>
-    </div>
+    </form>
   );
 };
 

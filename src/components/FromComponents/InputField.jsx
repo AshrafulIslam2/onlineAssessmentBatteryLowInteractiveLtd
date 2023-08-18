@@ -4,8 +4,10 @@ const InputField = ({
   title,
   placeholder,
   type,
-  HandleFirstStepData,
+  Handler,
   name,
+  value,
+  ref,
 }) => {
   return (
     <div>
@@ -16,9 +18,13 @@ const InputField = ({
         <input
           type={type}
           name={name}
+          ref={ref}
+          step="any"
+          required={true}
+          defaultValue={value}
           className="rounded-md py-2 px-2 placeholder:text-xs outline-1 outline-white focus:outline-purple-800"
           placeholder={placeholder}
-          onChange={HandleFirstStepData}
+          onChange={Handler}
         />
       </label>
     </div>

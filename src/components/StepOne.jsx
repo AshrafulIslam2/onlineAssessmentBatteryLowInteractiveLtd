@@ -6,7 +6,7 @@ const StepOne = ({ onNext }) => {
   const [FirstStepData, setFirstStepData] = useState();
   console.log(FirstStepData);
   const handleNext = () => {
-    onNext({ FirstStepData });
+    onNext({ ...FirstStepData });
   };
 
   const HandleFirstStepData = (event) => {
@@ -18,7 +18,7 @@ const StepOne = ({ onNext }) => {
   };
 
   return (
-    <div>
+    <form onSubmit={HandleFirstStepData}>
       <h2>Step 1</h2>
       {/* <input
         type="text"
@@ -32,7 +32,7 @@ const StepOne = ({ onNext }) => {
         name="projectname"
         placeholder="Enter project name"
         value=""
-        HandleFirstStepData={HandleFirstStepData}
+        Handler={HandleFirstStepData}
       />
       <InputField
         type={"text"}
@@ -40,25 +40,25 @@ const StepOne = ({ onNext }) => {
         title={"Project Description"}
         placeholder="Description"
         value=""
-        HandleFirstStepData={HandleFirstStepData}
+        Handler={HandleFirstStepData}
       />
       <InputField
         title={"Client"}
         name="clientname"
         placeholder="Client Name"
         value=""
-        HandleFirstStepData={HandleFirstStepData}
+        Handler={HandleFirstStepData}
       />
       <InputField
         title={"Contractor"}
         name="contractorname"
         placeholder="Contractor Name"
         value=""
-        HandleFirstStepData={HandleFirstStepData}
+        Handler={HandleFirstStepData}
       />
 
-      <Button title={"NEXT"} handleNext={handleNext} />
-    </div>
+      <Button type="submit" title={"NEXT"} handleNext={handleNext} />
+    </form>
   );
 };
 
