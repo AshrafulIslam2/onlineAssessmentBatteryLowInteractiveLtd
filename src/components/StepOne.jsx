@@ -18,14 +18,10 @@ const StepOne = ({ onNext }) => {
   };
 
   return (
-    <form onSubmit={HandleFirstStepData}>
-      <h2>Step 1</h2>
-      {/* <input
-        type="text"
-        placeholder="Enter your name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      /> */}
+    <form onSubmit={HandleFirstStepData} className="py-4">
+      <h2 className="text-center text-2xl text-white bg-lime-950 py-2 rounded-md mt-2">
+        Step 1
+      </h2>
       <InputField
         type={"text"}
         title={"Project Name"}

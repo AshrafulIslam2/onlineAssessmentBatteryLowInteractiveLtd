@@ -13,14 +13,6 @@ const StepTwo = ({ data, onPrevious, onSubmit, setFormData }) => {
   const [maxY, setMaxY] = useState(null);
   const [minZ, setMinZ] = useState(null);
   const [maxZ, setMaxZ] = useState(null);
-  // const HandlesecondStepData = (event) => {
-  //   const { name, value } = event.target;
-  //   SetsecondStepdata((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
@@ -79,8 +71,6 @@ const StepTwo = ({ data, onPrevious, onSubmit, setFormData }) => {
             setMinZ(Math.min(...zAxis));
             setMaxZ(Math.max(...zAxis));
           }
-
-          // Assuming data is an array of objects with x, y, z properties
         },
       });
     }
