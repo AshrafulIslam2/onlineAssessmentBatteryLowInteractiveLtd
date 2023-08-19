@@ -27,7 +27,7 @@ const StepOne = ({ onNext }) => {
         title={"Project Name"}
         name="projectname"
         placeholder="Enter project name"
-        value=""
+        value={FirstStepData?.projectname ? FirstStepData.projectname : ""}
         Handler={HandleFirstStepData}
       />
       <InputField
@@ -35,21 +35,27 @@ const StepOne = ({ onNext }) => {
         name="projectnamedescription"
         title={"Project Description"}
         placeholder="Description"
-        value=""
+        value={
+          FirstStepData?.projectnamedescription
+            ? FirstStepData?.projectnamedescription
+            : ""
+        }
         Handler={HandleFirstStepData}
       />
       <InputField
         title={"Client"}
         name="clientname"
         placeholder="Client Name"
-        value=""
+        value={FirstStepData?.clientname ? FirstStepData.clientname : ""}
         Handler={HandleFirstStepData}
       />
       <InputField
         title={"Contractor"}
         name="contractorname"
         placeholder="Contractor Name"
-        value=""
+        value={
+          FirstStepData?.contractorname ? FirstStepData.contractorname : ""
+        }
         Handler={HandleFirstStepData}
       />
 

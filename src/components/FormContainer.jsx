@@ -6,7 +6,6 @@ import StepTwo from "./StepTwo";
 const FormContainer = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({});
-  console.log(formData);
   const handleData = (data) => {
     setFormData((prevData) => ({ ...prevData, ...data }));
     setStep(2);
@@ -17,47 +16,45 @@ const FormContainer = () => {
   };
 
   const downloadCSV = async () => {
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 400]);
-    const { width, height } = page.getSize();
-    page.drawText("Battery Low Interactive Ltd.", {
-      x: 50,
-      y: height - 50,
-      size: 20,
-    });
-    page.drawText("Ashraful Islam", {
-      x: 50,
-      y: 30,
-      size: 10,
-    });
-    page.drawText("ashrafulislamsay7@gmail.com", {
-      x: 50,
-      y: 10,
-      size: 10,
-    });
-
-    let yOffset = height - 80;
-    for (const [key, value] of Object.entries(formData)) {
-      page.drawText(`${key}: ${value}`, {
+    if (formData) {
+      const pdfDoc = await PDFDocument.create();
+      const page = pdfDoc.addPage([600, 400]);
+      const { width, height } = page.getSize();
+      page.drawText("Battery Low Interactive Ltd.", {
         x: 50,
-        y: yOffset,
-        size: 14,
-        color: rgb(0, 0, 0),
+        y: height - 50,
+        size: 20,
       });
-      yOffset -= 20;
+
+      page.drawText("ashrafulislamsay7@gmail.com", {
+        x: 50,
+        y: 10,
+        size: 10,
+      });
+
+      let yOffset = height - 80;
+      for (const [key, value] of Object.entries(formData)) {
+        page.drawText(`${key}: ${value}`, {
+          x: 50,
+          y: yOffset,
+          size: 14,
+          color: rgb(0, 0, 0),
+        });
+        yOffset -= 20;
+      }
+
+      const pdfBytes = await pdfDoc.save();
+
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const blobURL = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobURL;
+      link.download = "Battery_Low_Interactive_Ltd.pdf";
+      link.click();
+
+      URL.revokeObjectURL(blobURL);
     }
-
-    const pdfBytes = await pdfDoc.save();
-
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const blobURL = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = blobURL;
-    link.download = "data.pdf";
-    link.click();
-
-    URL.revokeObjectURL(blobURL);
     // const csvData = [Object.keys(formData), Object.values(formData)];
     // console.log(csvData);
     // const csvContent = csvData.map((row) => row.join(",")).join("\n");
@@ -71,6 +68,10 @@ const FormContainer = () => {
     // link.click();
 
     // URL.revokeObjectURL(blobURL);
+  };
+  const GOBack = () => {
+    setFormData({});
+    setStep(1);
   };
 
   return (
@@ -92,6 +93,14 @@ const FormContainer = () => {
 
       {formData.min_Z && (
         <div className="flex flex-col items-center">
+          <div className="flex justify-start  w-full">
+            <button
+              className=" px-4 py-2 hover:-translate-x-2 hover:bg-lime-200 rounded-md hover:text-orange-400 font-Poppins font-medium"
+              onClick={GOBack}
+            >
+              Go Back
+            </button>
+          </div>
           <table
             id="table-to-export"
             className="border-collapse border border-slate-400 rounded-md table-fixed mx-auto my-10 "
@@ -168,8 +177,7 @@ const FormContainer = () => {
               </tr>
             </tbody>
           </table>
-          <div className="flex justify-center ">
-            {" "}
+          <div className="flex justify-center  bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500">
             <button
               className="py-2 px-2 text-white hover:border-b "
               onClick={downloadCSV}

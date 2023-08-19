@@ -77,9 +77,10 @@ const StepTwo = ({ data, onPrevious, onSubmit, setFormData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} ref={formRef}>
-      <h2>Step 2</h2>
-      <p>Name: {data.name}</p>
+    <form onSubmit={handleSubmit} ref={formRef} className="py-4">
+      <h2 className="text-center text-2xl text-white bg-lime-950 py-2 rounded-md mt-2">
+        Step 2
+      </h2>
       <InputField
         type={"file"}
         title={"Upload CSV File"}
